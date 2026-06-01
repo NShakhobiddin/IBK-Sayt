@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="O'zbekiston Respublikasi bojxona qoidalari — xalqaro yo'lovchilar uchun qo'llanma. Customs rules of Uzbekistan for international travellers.">
+  <meta name="theme-color" content="#0e7490">
+  <title>Bojxona qoidalari · Customs Rules · Uzbekistan</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛃</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- Intro animatsiya -->
+  <div id="intro" class="intro">
+    <div class="intro__inner">
+      <div class="intro__badge">🛃</div>
+      <h1 id="introText" class="intro__text">Bojxonaga xush kelibsiz</h1>
+      <p id="introSub" class="intro__sub">O‘zbekiston Respublikasi · Bojxona qoidalari</p>
+    </div>
+    <button id="skipIntro" class="intro__skip">O‘tkazib yuborish</button>
+    <div class="intro__planes" aria-hidden="true">✈️</div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <a class="brand" id="homeLink" href="#/">
+      <span class="brand__logo">🛃</span>
+      <span class="brand__txt">
+        <strong id="brandName">Bojxona qoidalari</strong>
+        <small id="brandSub">Xalqaro yo‘lovchilar uchun qo‘llanma</small>
+      </span>
+    </a>
+
+    <div class="header__actions">
+      <button id="searchBtn" class="icon-btn" aria-label="Search">🔍</button>
+      <div class="lang-switch">
+        <button class="lang-btn" data-lang="uz">UZ</button>
+        <button class="lang-btn" data-lang="ru">RU</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="zh">中文</button>
+      </div>
+      <button id="menuToggle" class="icon-btn icon-btn--menu" aria-label="Menu">🌐</button>
+    </div>
+  </header>
+
+  <!-- Asosiy kontent -->
+  <main id="app" class="app"></main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p id="disclaimer" class="footer__disc"></p>
+    <p id="footerText" class="footer__rights"></p>
+  </footer>
+
+  <!-- Qidiruv modal -->
+  <div id="searchModal" class="search-modal">
+    <div class="search-box">
+      <div class="search-head">
+        <input id="searchInput" class="search-input" type="text" placeholder="Qidirish...">
+        <button id="searchClose" class="icon-btn">✕</button>
+      </div>
+      <div id="searchResults" class="search-results"></div>
+    </div>
+  </div>
+
+  <!-- Skriptlar -->
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/prohibited.js"></script>
+  <script src="assets/js/content.js"></script>
+  <script src="assets/js/contacts.js"></script>
+  <script src="assets/js/calculator.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

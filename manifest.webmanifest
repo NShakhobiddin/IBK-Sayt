@@ -1,0 +1,20 @@
+{
+  "name": "Bojxona qoidalari — Customs Rules Uzbekistan",
+  "short_name": "Bojxona",
+  "description": "O'zbekiston bojxona qoidalari xalqaro yo'lovchilar uchun (UZ/RU/EN/ZH).",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0c4a6e",
+  "theme_color": "#0e7490",
+  "lang": "uz",
+  "icons": [
+    {
+      "src": "assets/img/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

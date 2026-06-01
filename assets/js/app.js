@@ -293,6 +293,9 @@ function bindCalculator() {
   const valEl = $("#cValue"), wEl = $("#cWeight"), dEl = $("#cDelivery"), rEl = $("#cRate");
   let channel = 200;
 
+  // Kurs hali yuklanmagan bo'lsa (masalan, sahifa to'g'ridan-to'g'ri ochilsa) qayta urinamiz
+  if (!STATE.rate) loadRate();
+
   $$(".calc__tab").forEach(b => b.addEventListener("click", () => {
     CALC_MODE = b.dataset.mode;
     rerender();
@@ -516,16 +519,32 @@ async function init() {
   applyLang();
 
   // CBU kursini olish
+  loadRate();
+}
+
+async function loadRate() {
   const r = await fetchUsdRate();
+  const rv = $("#rateVal");
   if (r) {
     STATE.rate = r.rate;
     STATE.rateDate = r.date;
-    const rv = $("#rateVal");
-    if (rv) rv.textContent = `1 USD = ${fmt(r.rate)} ${soum()}${r.date ? " · " + r.date : ""}`;
+    STATE.rateCached = !!r.cached;
+    if (rv) {
+      const suffix = r.cached ? ` · ${t("calc_rate_cached")}` : (r.date ? " · " + r.date : "");
+      rv.textContent = `1 USD = ${fmt(r.rate)} ${soum()}${suffix}`;
+    }
   } else {
-    const rv = $("#rateVal");
     if (rv) rv.textContent = t("calc_rate_fail");
+    const mb = $("#manualBox");
+    if (mb) mb.open = true; // qo'lda kiritishni avtomatik ochamiz
   }
 }
 
 document.addEventListener("DOMContentLoaded", init);
+
+// Service worker — offline ishlash uchun (faqat http/https da)
+if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js").catch(() => { /* offline rejim ixtiyoriy */ });
+  });
+}

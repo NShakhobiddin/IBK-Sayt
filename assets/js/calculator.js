@@ -17,13 +17,18 @@ const FEE_RATE = 0.25;       // BHM ning 25% (yagona bojxona to'lovi yig'imi)
 // Joriy USD kursi (so'mda). CBU API'dan yoki qo'lda kiritiladi.
 let CURRENT_RATE = null;
 
-/* CBU (Markaziy bank) API'dan USD kursini olish */
+/* CBU (Markaziy bank) API'dan USD kursini olish.
+   To'g'ridan-to'g'ri so'rov CORS sababli ishlamasa, ochiq CORS-proksilar
+   orqali urinib ko'riladi. Hech biri ishlamasa null qaytadi (qo'lda kiritish). */
 async function fetchUsdRate() {
-  const endpoints = [
-    "https://cbu.uz/uz/arkhiv-kursov-valyut/json/USD/",
+  const base = "https://cbu.uz/uz/arkhiv-kursov-valyut/json/USD/";
+  const attempts = [
+    base,
     "https://cbu.uz/oz/arkhiv-kursov-valyut/json/USD/",
+    "https://corsproxy.io/?url=" + encodeURIComponent(base),
+    "https://api.allorigins.win/raw?url=" + encodeURIComponent(base),
   ];
-  for (const url of endpoints) {
+  for (const url of attempts) {
     try {
       const res = await fetch(url, { cache: "no-store" });
       if (!res.ok) continue;
@@ -32,12 +37,24 @@ async function fetchUsdRate() {
       const rate = parseFloat(item && item.Rate);
       if (rate && !isNaN(rate)) {
         CURRENT_RATE = rate;
-        return { rate, date: item.Date || "" };
+        try {
+          localStorage.setItem("usdRate", String(rate));
+          localStorage.setItem("usdRateDate", item.Date || "");
+        } catch (e) { /* localStorage mavjud bo'lmasligi mumkin */ }
+        return { rate, date: item.Date || "", cached: false };
       }
     } catch (e) {
-      /* keyingi endpoint yoki qo'lda kiritishga o'tamiz */
+      /* keyingi urinishga o'tamiz */
     }
   }
+  // Internet yo'q bo'lsa, oxirgi saqlangan kursdan foydalanamiz
+  try {
+    const saved = parseFloat(localStorage.getItem("usdRate"));
+    if (saved && !isNaN(saved)) {
+      CURRENT_RATE = saved;
+      return { rate: saved, date: localStorage.getItem("usdRateDate") || "", cached: true };
+    }
+  } catch (e) { /* ignore */ }
   return null;
 }
 
